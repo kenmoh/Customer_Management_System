@@ -1,0 +1,20 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card-height {
+    height: 145px;
+}
+
+.form-control:focus input[type=text]:focus {
+  border-color: green;
+  outline: none;
+  box-shadow: none;
+}
+
+.profile-pic {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+    border-radius: 100%;
+}

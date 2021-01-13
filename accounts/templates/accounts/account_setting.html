@@ -1,0 +1,29 @@
+{% extends 'accounts/base.html' %}
+<!-- ------- -->
+{% load static %}
+<!-- ------- -->
+{% load crispy_forms_tags %}
+<!-- ------- -->
+{% block content %}
+{% include 'accounts/message.html' %}
+<div class="row mt-5">
+    <div class="col-md-3">
+        <div class="card card-body">
+            <a href="" class="btn btn-warning">&#8592; Back to Profile</a>
+            <h3 class="text-center">Account Settings</h3>
+            <img src="{{ request.user.customer.profile_pic.url }}" alt="" class="rounded-circle img-responsive img-fluid mx-auto d-bloc">
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card card-body">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <input type="submit" class="btn btn-primary mt-2" name="Update Information">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

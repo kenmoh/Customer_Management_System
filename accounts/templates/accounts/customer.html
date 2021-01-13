@@ -1,0 +1,166 @@
+{% extends 'accounts/base.html' %}
+<!-- ------- -->
+{% load static %}
+<!-- ------- -->
+{% load crispy_forms_tags %}
+<!-- ------- -->
+{% block content %}
+
+<div class="row mt-5">
+  <div class="col-4 mb-3 card-height">
+    <div class="card card-body card-height">
+      <h5 class="text-center">Customer</h5>
+      <a
+        href="{% url 'update_customer' customer.id %}"
+        class="btn btn-outline-info btn-sm btn-block mb-2"
+        >Update Customer</a
+      ><a
+        href="{% url 'create_order' customer.id %}"
+        class="btn btn-outline-info btn-sm btn-block mb-2"
+        >Place Order</a
+      >
+
+      <div
+        class="modal fade"
+        id="deleteCustomer"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="deleteCustomerLabel"
+        aria-hidden="true"
+      >
+      </div>
+    </div>
+  </div>
+  <div class="col-6 mb-3">
+    <div class="card card-body card-height">
+      <h5 class="text-center">Customer Information</h5>
+      <p class="mb-0">Email: {{ customer.name }}</p>
+      <p class="mb-0">Email: {{ customer.email }}</p>
+      <p class="mb-0">Phone: {{ customer.phone }}</p>
+    </div>
+  </div>
+  <div class="col-2 mb-3">
+    <div class="card card-body card-height">
+      <h5 class="text-center">Total Orders</h5>
+      <h1 class="text-center">{{ order_count }}</h1>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col">
+    <div class="card card-body">
+      <form method="get">
+        <div class="row">
+          <div class="col-md-6 mb-0 mt-2">
+            {{ order_filter.form.product|as_crispy_field }}
+          </div>
+          <div class="col-md-6 mb-0 mt-2">
+            {{ order_filter.form.status|as_crispy_field }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-0 mt-2">
+            {{ order_filter.form.start_date|as_crispy_field }}
+          </div>
+          <div class="col-md-6 mb-0 mt-2">
+            {{ order_filter.form.end_date|as_crispy_field }}
+          </div>
+        </div>
+        {{ order_filter.form.description|as_crispy_field }}
+
+        <button class="btn btn-primary mt-3" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row mb-5">
+  <div class="col-md">
+    <div class="card card-body">
+      <table class="table-sm table text-center">
+        <tr>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Date Created</th>
+          <th>Update</th>
+          <th>Remove</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+          <td>{{ order.product }}</td>
+          <td>{{ order.product.category }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.date_created }}</td>
+          <td>
+            <a
+              href="{% url 'update_order' order.id %}"
+              class="btn btn-secondary btn-sm"
+              >Update</a
+            >
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteOrder"
+            >
+              Delete
+            </button>
+            <div
+              class="modal fade"
+              id="deleteOrder"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="deleteOrderLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5
+                      class="modal-title text-center"
+                      id="staticBackdropLabel"
+                    >
+                      Delete Order
+                    </h5>
+                  </div>
+                  <div class="modal-body">
+                    <p class="text-danger">
+                      Are you sure you want to delete "{{ order.product }}"
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <form
+                      action="{% url 'delete_order' order.id %}"
+                      method="POST"
+                    >
+                      {% csrf_token %}
+                      <a
+                        href="{% url 'customer' customer.id %}"
+                        class="btn btn-secondary btn-sm"
+                        >Cancel</a
+                      >
+                      <input
+                        class="btn btn-danger btn-sm"
+                        type="submit"
+                        name="confirm"
+                        valie=""
+                      />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

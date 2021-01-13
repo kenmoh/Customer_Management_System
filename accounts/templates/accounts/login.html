@@ -1,0 +1,49 @@
+{% extends 'accounts/base.html' %}
+<!-- ----- -->
+{% load static %}
+<!-- ----- -->
+{% load crispy_forms_tags %}
+<!-- ----- -->
+{% block content %}
+
+<div class="row mt-5 justify-content-center">
+  <div class="col-md-6">
+    <div class="card card-body">
+      <div class="card-title">
+        <h5 class="text-center">Login</h5>
+        {% include 'accounts/message.html' %}
+      </div>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            id="username"
+            name="username"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control form-control-sm"
+            id="password"
+            name="password"
+          />
+        </div>
+        <!-- ----- -->
+        {{ form | crispy }}
+        <input class="btn btn-sm btn-primary mt-3" type="submit" name="Login" />
+        <br />
+        <small class="text-muted"
+          >Don't have an account?
+          <a href="{% url 'register' %}" class="">Register</a></small
+        >
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
